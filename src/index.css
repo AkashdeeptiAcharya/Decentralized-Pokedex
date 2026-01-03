@@ -1,3 +1,75 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@keyframes legendaryGlow {
+  0% {
+    text-shadow:
+      0 0 6px rgba(255, 215, 0, 0.6),
+      0 0 12px rgba(255, 215, 0, 0.4);
+  }
+  50% {
+    text-shadow:
+      0 0 10px rgba(255, 215, 0, 0.9),
+      0 0 20px rgba(255, 215, 0, 0.7);
+  }
+  100% {
+    text-shadow:
+      0 0 6px rgba(255, 215, 0, 0.6),
+      0 0 12px rgba(255, 215, 0, 0.4);
+  }
+}
+
+.legendary-glow {
+  animation: legendaryGlow 2s ease-in-out infinite;
+  font-weight: 700;
+}
+
+@keyframes idle {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+.animate-idle {
+  animation: idle 1.8s ease-in-out infinite;
+}
+
+@keyframes spawn {
+  from {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.animate-spawn {
+  animation: spawn 0.25s ease-out;
+}
+
+@keyframes throwBall {
+  0% {
+    transform: translate(-50%, 0) scale(0.8);
+    opacity: 0;
+  }
+  30% {
+    opacity: 1;
+  }
+  60% {
+    transform: translate(-50%, -140px) scale(1);
+  }
+  100% {
+    transform: translate(-50%, -220px) scale(0.5);
+    opacity: 0;
+  }
+}
+
+.animate-throw-ball {
+  animation: throwBall 0.9s ease-out forwards;
+}
