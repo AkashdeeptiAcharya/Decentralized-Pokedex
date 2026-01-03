@@ -177,29 +177,7 @@ Please ensure your code follows the project's style and includes relevant tests 
 
 ---
 
-## Architecture Overview
 
-Below is a high-level overview of the system's architecture:
-
-```mermaid
-flowchart TD
-    subgraph Blockchain
-        SC[Smart Contract]
-    end
-    subgraph Frontend
-        UI[User Interface]
-        Web3[Web3 Provider]
-    end
-    subgraph Backend
-        API[API Layer (optional)]
-    end
-
-    UI --> Web3 --> SC
-    UI --> API
-    API --> SC
-```
-
----
 
 ## License
 
