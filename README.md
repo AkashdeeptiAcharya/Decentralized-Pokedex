@@ -92,6 +92,7 @@ You may find configuration files such as `.env`, `truffle-config.js`, or `hardha
    git clone https://github.com/AkashdeeptiAcharya/Decentralized-Pokedex.git
    cd Decentralized-Pokedex
    ```
+---
 
 2. **Install MetaMask Extension**
 https://metamask.io/download/
@@ -105,6 +106,7 @@ Supported browsers:
 After installation:
 1. Create a new wallet or import an existing one
 2. Securely store your recovery phrase
+---
 
 3. **Enable Sepolia Test Network**
 
@@ -116,6 +118,7 @@ This project runs on the **Sepolia Ethereum testnet**.
 3. Enable **Show test networks**
 4. Open the network selector at the top of MetaMask
 5. Select **Sepolia Test Network**
+---
 
 4. **Get Sepolia Test ETH**
 
@@ -129,6 +132,7 @@ Steps:
 2. Paste it into the faucet
 3. Request test ETH
 4. Wait for the ETH to appear in your wallet
+---
 
 5. **Install Dependencies**
    ```bash
@@ -136,6 +140,7 @@ Steps:
    # or
    yarn install
    ```
+---
 
 6. **Compile and Deploy Smart Contracts**
    - For Truffle:
@@ -148,10 +153,12 @@ Steps:
      npx hardhat compile
      npx hardhat run scripts/deploy.js --network localhost
      ```
+---
 
 7. **Configure Frontend**
    - Update contract addresses and ABI in the frontend config.
    - Set up `.env` with RPC URLs and other secrets as needed.
+---
 
 8. **Run the Frontend**
    ```bash
