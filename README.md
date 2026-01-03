@@ -1,8 +1,55 @@
-# Decentralized Pokedex
+# 🧬 Decentralized Pokédex  
+*A Pokémon-style adventure on the blockchain*
 
-A decentralized, open-source Pokedex application built with blockchain integration. This project allows users to explore, add, and interact with Pokemon data in a trustless and distributed manner, leveraging modern web and smart contract technologies.
+A Pokémon-style adventure on the blockchain — connect your wallet, encounter wild Pokémon, and capture them forever on-chain ⚡🎮
 
 ---
+
+## 📌 Overview
+
+**Decentralized Pokédex** is a Web3-based Pokémon-inspired application where users can **encounter, capture, and permanently own Pokémon on the Ethereum blockchain**.
+
+Each capture is:
+- Executed as an **on-chain transaction**
+- Paid using **test ETH**
+- Stored permanently in a **smart contract**
+- Linked to the user's **wallet address**
+
+The project combines **classic Pokémon nostalgia** with **decentralized ownership**, turning each Pokémon into an immutable on-chain record.
+
+---
+
+## ✨ Features
+
+- 🔐 MetaMask wallet integration  
+- 🎮 Random Pokémon encounters  
+- ⭐ Rarity system (Common → Legendary)  
+- ✨ Legendary visual effects  
+- 🧾 On-chain Pokédex storage  
+- 🖼️ Pixel-style Pokémon sprites  
+- 🎨 Type-based UI color theming  
+- 🚫 Graceful handling of cancelled transactions  
+
+---
+
+## 🧠 How It Works
+
+1. User connects their MetaMask wallet  
+2. User clicks **Find Pokémon**  
+3. A random Pokémon encounter is generated  
+4. Pokémon details (type, rarity, sprite) are shown  
+5. User can:
+   - **Capture Pokémon** (on-chain transaction)
+   - **Run Away** (cancel encounter)
+6. If captured:
+   - Pokémon is stored in the smart contract
+   - Added permanently to the user’s Pokédex
+7. If the transaction is rejected:
+   - Pokémon runs away
+   - UI resets naturally
+
+---
+
 
 ## Configuration
 
@@ -14,11 +61,6 @@ Before running the Decentralized Pokedex, update key configuration files to matc
 
 You may find configuration files such as `.env`, `truffle-config.js`, or `hardhat.config.js` for backend and `src/config.js` or `.env` for frontend.
 
----
-
-## Introduction
-
-Decentralized Pokedex is a blockchain-powered application for managing and querying Pokemon data. Using smart contracts, it guarantees data immutability and transparency. The project supports both on-chain interactions and a modern decentralized frontend, aiming to showcase how DApps can blend fun, utility, and security.
 
 ---
 
@@ -90,6 +132,44 @@ Decentralized Pokedex is a blockchain-powered application for managing and query
 
 2. **Connect Wallet**  
    Click "Connect Wallet" and authorize the DApp via MetaMask or your preferred wallet.
+   MetaMask is required to interact with the Ethereum blockchain and to sign transactions.
+
+### Install MetaMask Extension
+https://metamask.io/download/
+
+Supported browsers:
+- Google Chrome
+- Mozilla Firefox
+- Brave
+- Microsoft Edge
+
+After installation:
+1. Create a new wallet or import an existing one
+2. Securely store your recovery phrase
+
+### Enable Sepolia Test Network
+
+This project runs on the **Sepolia Ethereum testnet**.
+
+### Steps:
+1. Open MetaMask
+2. Go to **Settings → Advanced**
+3. Enable **Show test networks**
+4. Open the network selector at the top of MetaMask
+5. Select **Sepolia Test Network**
+
+### Get Sepolia Test ETH
+
+You will need test ETH to perform capture transactions.
+
+### Sepolia Faucet
+https://sepoliafaucet.com/
+
+Steps:
+1. Copy your MetaMask wallet address
+2. Paste it into the faucet
+3. Request test ETH
+4. Wait for the ETH to appear in your wallet
 
 3. **Explore the Pokedex**  
    Browse all existing Pokemon, search by name or number, and view details.
