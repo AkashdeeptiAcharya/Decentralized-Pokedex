@@ -93,14 +93,51 @@ You may find configuration files such as `.env`, `truffle-config.js`, or `hardha
    cd Decentralized-Pokedex
    ```
 
-2. **Install Dependencies**
+2. **Install MetaMask Extension**
+https://metamask.io/download/
+
+Supported browsers:
+- Google Chrome
+- Mozilla Firefox
+- Brave
+- Microsoft Edge
+
+After installation:
+1. Create a new wallet or import an existing one
+2. Securely store your recovery phrase
+
+3. **Enable Sepolia Test Network**
+
+This project runs on the **Sepolia Ethereum testnet**.
+
+### Steps:
+1. Open MetaMask
+2. Go to **Settings → Advanced**
+3. Enable **Show test networks**
+4. Open the network selector at the top of MetaMask
+5. Select **Sepolia Test Network**
+
+4. **Get Sepolia Test ETH**
+
+You will need test ETH to perform capture transactions.
+
+### Sepolia Faucet
+https://sepoliafaucet.com/
+
+Steps:
+1. Copy your MetaMask wallet address
+2. Paste it into the faucet
+3. Request test ETH
+4. Wait for the ETH to appear in your wallet
+
+5. **Install Dependencies**
    ```bash
    npm install
    # or
    yarn install
    ```
 
-3. **Compile and Deploy Smart Contracts**
+6. **Compile and Deploy Smart Contracts**
    - For Truffle:
      ```bash
      truffle compile
@@ -112,11 +149,11 @@ You may find configuration files such as `.env`, `truffle-config.js`, or `hardha
      npx hardhat run scripts/deploy.js --network localhost
      ```
 
-4. **Configure Frontend**
+7. **Configure Frontend**
    - Update contract addresses and ABI in the frontend config.
    - Set up `.env` with RPC URLs and other secrets as needed.
 
-5. **Run the Frontend**
+8. **Run the Frontend**
    ```bash
    cd frontend
    npm install
@@ -133,43 +170,6 @@ You may find configuration files such as `.env`, `truffle-config.js`, or `hardha
 2. **Connect Wallet**  
    Click "Connect Wallet" and authorize the DApp via MetaMask or your preferred wallet.
    MetaMask is required to interact with the Ethereum blockchain and to sign transactions.
-
-### Install MetaMask Extension
-https://metamask.io/download/
-
-Supported browsers:
-- Google Chrome
-- Mozilla Firefox
-- Brave
-- Microsoft Edge
-
-After installation:
-1. Create a new wallet or import an existing one
-2. Securely store your recovery phrase
-
-### Enable Sepolia Test Network
-
-This project runs on the **Sepolia Ethereum testnet**.
-
-### Steps:
-1. Open MetaMask
-2. Go to **Settings → Advanced**
-3. Enable **Show test networks**
-4. Open the network selector at the top of MetaMask
-5. Select **Sepolia Test Network**
-
-### Get Sepolia Test ETH
-
-You will need test ETH to perform capture transactions.
-
-### Sepolia Faucet
-https://sepoliafaucet.com/
-
-Steps:
-1. Copy your MetaMask wallet address
-2. Paste it into the faucet
-3. Request test ETH
-4. Wait for the ETH to appear in your wallet
 
 3. **Explore the Pokedex**  
    Browse all existing Pokemon, search by name or number, and view details.
