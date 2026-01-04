@@ -11,7 +11,7 @@ const LEGENDARY_IDS = [144, 145, 146, 150, 151];
 const CONTRACT_ADDRESS = "0x3603e26675B3F61EC3c8F1fd94da1B7ad862d490";
 const CONTRACT_ABI = [
   {
-    "inputs": [{"internalType": "uint256", "name": "_pokemonId", "type": "uint256"}],
+    "inputs": [{ "internalType": "uint256", "name": "_pokemonId", "type": "uint256" }],
     "name": "capturePokemon",
     "outputs": [],
     "stateMutability": "payable",
@@ -20,28 +20,28 @@ const CONTRACT_ABI = [
   {
     "inputs": [],
     "name": "getMyPokedex",
-    "outputs": [{"components": [{"internalType": "uint256", "name": "pokemonId", "type": "uint256"}, {"internalType": "uint256", "name": "captureTime", "type": "uint256"}, {"internalType": "address", "name": "owner", "type": "address"}], "internalType": "struct Pokedex.Pokemon[]", "name": "", "type": "tuple[]"}],
+    "outputs": [{ "components": [{ "internalType": "uint256", "name": "pokemonId", "type": "uint256" }, { "internalType": "uint256", "name": "captureTime", "type": "uint256" }, { "internalType": "address", "name": "owner", "type": "address" }], "internalType": "struct Pokedex.Pokemon[]", "name": "", "type": "tuple[]" }],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [],
     "name": "getMyCaptureCount",
-    "outputs": [{"internalType": "uint256", "name": "", "type": "uint256"}],
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
     "stateMutability": "view",
     "type": "function"
   },
   {
-    "inputs": [{"internalType": "address", "name": "_trainer", "type": "address"}],
+    "inputs": [{ "internalType": "address", "name": "_trainer", "type": "address" }],
     "name": "getCompletionPercentage",
-    "outputs": [{"internalType": "uint256", "name": "", "type": "uint256"}],
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [],
     "name": "captureFee",
-    "outputs": [{"internalType": "uint256", "name": "", "type": "uint256"}],
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
     "stateMutability": "view",
     "type": "function"
   }
@@ -61,15 +61,15 @@ export default function DecentralizedPokedex() {
   const [encounter, setEncounter] = useState(null);
   const [encounterResult, setEncounterResult] = useState(null);
   const isUserRejection = (err) => {
-  return (
-    err?.code === 4001 ||
-    err?.code === "ACTION_REJECTED" ||
-    err?.message?.toLowerCase().includes("user rejected") ||
-    err?.message?.toLowerCase().includes("denied transaction") ||
-    err?.message?.toLowerCase().includes("rejected")
-  );
+    return (
+      err?.code === 4001 ||
+      err?.code === "ACTION_REJECTED" ||
+      err?.message?.toLowerCase().includes("user rejected") ||
+      err?.message?.toLowerCase().includes("denied transaction") ||
+      err?.message?.toLowerCase().includes("rejected")
+    );
 
-};
+  };
 
   // Load Ethers.js library
   useEffect(() => {
@@ -108,36 +108,36 @@ export default function DecentralizedPokedex() {
 
     try {
       setError("Connecting...");
-      
+
       // Request account access
-      const accounts = await window.ethereum.request({ 
-        method: 'eth_requestAccounts' 
+      const accounts = await window.ethereum.request({
+        method: 'eth_requestAccounts'
       });
-      
+
       if (!accounts || accounts.length === 0) {
         setError("No accounts found. Please unlock MetaMask.");
         return;
       }
 
       setAccount(accounts[0]);
-      
+
       // Create provider and contract instance (disable ENS)
       const provider = new window.ethers.providers.Web3Provider(window.ethereum, "any");
       const signer = provider.getSigner();
-      
+
       // Check if we're on the right network
       const network = await provider.getNetwork();
       console.log("Connected to network:", network.name, "Chain ID:", network.chainId);
-      
+
       const contractInstance = new window.ethers.Contract(
         CONTRACT_ADDRESS,
         CONTRACT_ABI,
         signer
       );
-      
+
       setContract(contractInstance);
       setError("");
-      
+
       // Listen for account changes
       window.ethereum.on('accountsChanged', (accounts) => {
         if (accounts.length === 0) {
@@ -163,12 +163,12 @@ export default function DecentralizedPokedex() {
   // Load user's Pokedex
   const loadPokedex = async () => {
     if (!contract) return;
-    
+
     try {
       const pokedex = await contract.getMyPokedex();
       const count = await contract.getMyCaptureCount();
       const percent = await contract.getCompletionPercentage(account);
-      
+
       setMyPokedex(pokedex);
       setCaptureCount(count.toNumber());
       setCompletion(percent.toNumber());
@@ -181,55 +181,55 @@ export default function DecentralizedPokedex() {
   };
 
   const resetEncounterFlow = () => {
-  setEncounter(null);
-  setEncounterResult(null);
-  setLoading(false);
-  setTxHash("");
-  setError("");
-};
-const startEncounter = () => {
-  const e = getRandomEncounter();
+    setEncounter(null);
+    setEncounterResult(null);
+    setLoading(false);
+    setTxHash("");
+    setError("");
+  };
+  const startEncounter = () => {
+    const e = getRandomEncounter();
 
-  setEncounter({
-    pokemonId: e.pokemonId,
-    rarity: e.rarity,
-    name: POKEMON_DATA[e.pokemonId].name,
-    type: POKEMON_DATA[e.pokemonId].type,
-    color: POKEMON_DATA[e.pokemonId].color,
-    sprite: getPokemonSprite(e.pokemonId),
-    isLegendary: e.rarity === "legendary",
-  });
+    setEncounter({
+      pokemonId: e.pokemonId,
+      rarity: e.rarity,
+      name: POKEMON_DATA[e.pokemonId].name,
+      type: POKEMON_DATA[e.pokemonId].type,
+      color: POKEMON_DATA[e.pokemonId].color,
+      sprite: getPokemonSprite(e.pokemonId),
+      isLegendary: e.rarity === "legendary",
+    });
 
-  setEncounterResult(null);
-  setError("");
-  setTxHash("");
-};
+    setEncounterResult(null);
+    setError("");
+    setTxHash("");
+  };
 
   // Capture Pokemon
   const capturePokemon = async () => {
     setEncounterResult(null);
 
-    
-  if (!contract || !encounter) return;
 
-  // 🎯 Trigger Poké Ball animation
-  setThrowingBall(true);
-  setTimeout(() => setThrowingBall(false), 900);
+    if (!contract || !encounter) return;
 
-    
+    // 🎯 Trigger Poké Ball animation
+    setThrowingBall(true);
+    setTimeout(() => setThrowingBall(false), 900);
+
+
     setLoading(true);
     setError("");
     setTxHash("");
-    
+
     try {
       const fee = await contract.captureFee();
       const pokemonId = encounter.pokemonId;
-const tx = await contract.capturePokemon(pokemonId, {
-  value: fee
-});
+      const tx = await contract.capturePokemon(pokemonId, {
+        value: fee
+      });
 
 
-      
+
       setTxHash(tx.hash);
       await tx.wait();
       setEncounterResult("caught");
@@ -237,32 +237,32 @@ const tx = await contract.capturePokemon(pokemonId, {
       // Reload data
       await loadPokedex();
       setLoading(false);
-   } catch (err) {
-  console.error("Capture error:", err);
+    } catch (err) {
+      console.error("Capture error:", err);
 
-  if (isUserRejection(err)) {
-  setError("");
-  setEncounterResult("escaped");
-  setLoading(false);
+      if (isUserRejection(err)) {
+        setError("");
+        setEncounterResult("escaped");
+        setLoading(false);
 
-  // ⏳ Let the "ran away" message show briefly
-  setTimeout(() => {
-    setEncounter(null);
-    setEncounterResult(null);
-  }, 2000);
+        // ⏳ Let the "ran away" message show briefly
+        setTimeout(() => {
+          setEncounter(null);
+          setEncounterResult(null);
+        }, 2000);
 
-  return;
-}
+        return;
+      }
 
-  // 🚨 Real failure
-  if (err.message?.includes("insufficient funds")) {
-    setError("❌ Not enough ETH to throw a Poké Ball.");
-  } else {
-    setError("❌ Capture failed. Something went wrong.");
-  }
+      // 🚨 Real failure
+      if (err.message?.includes("insufficient funds")) {
+        setError("❌ Not enough ETH to throw a Poké Ball.");
+      } else {
+        setError("❌ Capture failed. Something went wrong.");
+      }
 
-  setLoading(false);
-}
+      setLoading(false);
+    }
   };
 
   // Load data when contract is ready
@@ -272,14 +272,14 @@ const tx = await contract.capturePokemon(pokemonId, {
     }
   }, [contract, account]);
   useEffect(() => {
-  if (encounterResult === "caught") {
-    const timer = setTimeout(() => {
-      resetEncounterFlow();
-    }, 4000);
+    if (encounterResult === "caught") {
+      const timer = setTimeout(() => {
+        resetEncounterFlow();
+      }, 4000);
 
-    return () => clearTimeout(timer);
-  }
-}, [encounterResult]);
+      return () => clearTimeout(timer);
+    }
+  }, [encounterResult]);
 
 
   // Format timestamp
@@ -297,9 +297,9 @@ const tx = await contract.capturePokemon(pokemonId, {
 
             Decentralized Pokédex
           </h1>
-         <p className="text-sm">
-  A blockchain-powered Pokédex
-</p>
+          <p className="text-sm">
+            A blockchain-powered Pokédex
+          </p>
 
         </div>
 
@@ -307,18 +307,35 @@ const tx = await contract.capturePokemon(pokemonId, {
         {!account ? (
           <div className="relative bg-white/10 backdrop-blur-lg rounded-2xl p-8 text-center max-w-md mx-auto">
             <Wallet className="w-16 h-16 mx-auto mb-4 text-yellow-400" />
-            <h2 className="text-2xl font-bold mb-4">Connect Your Wallet</h2>
-            <p className="text-gray-300 mb-6">
-              Connect MetaMask to start capturing Pokémon
+
+            <h2 className="text-3xl font-extrabold mb-2">
+              Welcome, Trainer!
+            </h2>
+
+            <p className="text-sm text-gray-400 mb-4">
+              Your journey begins on the blockchain.
             </p>
+
+            <div className="text-sm text-gray-500 mb-6 space-y-1">
+              <p>• Encounter wild Pokémon</p>
+              <p>• Capture them on-chain</p>
+              <p>• Build your Pokédex forever</p>
+            </div>
+
             <button
               onClick={connectWallet}
               disabled={!ethersLoaded}
-              className="bg-gradient-to-r from-yellow-400 to-orange-500 text-gray-900 font-bold py-3 px-8 rounded-full hover:scale-105 transition-transform disabled:opacity-50 disabled:cursor-not-allowed"
+              className="bg-gradient-to-r from-yellow-400 to-orange-500
+             text-gray-900 font-bold py-3 px-8 rounded-full
+             hover:scale-105 transition-transform
+             disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {ethersLoaded ? "Connect MetaMask" : "Loading..."}
             </button>
-            
+
+            <p className="text-xs text-gray-500 mt-4">
+              We never access your funds — this only links your Pokédex.
+            </p>
             {error && (
               <div className="mt-4 p-4 bg-red-500/20 border border-red-500 rounded-lg text-sm text-left">
                 <div className="flex items-start gap-2">
@@ -332,9 +349,9 @@ const tx = await contract.capturePokemon(pokemonId, {
             {ethersLoaded && typeof window.ethereum === 'undefined' && (
               <div className="mt-6 p-4 bg-yellow-500/20 border border-yellow-500 rounded-lg">
                 <p className="text-sm font-semibold mb-2">MetaMask Not Detected</p>
-                <a 
-                  href="https://metamask.io/download/" 
-                  target="_blank" 
+                <a
+                  href="https://metamask.io/download/"
+                  target="_blank"
                   rel="noopener noreferrer"
                   className="text-yellow-400 hover:underline text-sm flex items-center justify-center gap-1"
                 >
@@ -346,73 +363,57 @@ const tx = await contract.capturePokemon(pokemonId, {
         ) : (
           <>
             {/* Stats Dashboard */}
-            <div className="
-  border-4 border-black
-  bg-[#f5f5dc]
-  p-4
-  mb-6
-  flex
-  justify-between
-  items-center
-  text-sm
-">
-  <div>
-    <strong>Trainer:</strong>{" "}
-    {account.slice(0, 6)}…{account.slice(-4)}
-  </div>
+            <div className="border-4 border-black  bg-[#f5f5dc] p-4 mb-6 flex
+  justify-between items-centertext-sm">
+              <div>
+                <strong>Trainer:</strong>{" "}
+                {account.slice(0, 6)}…{account.slice(-4)}
+              </div>
 
-  <div>
-    <strong>Pokémon:</strong> {captureCount}
-  </div>
+              <div>
+                <strong>Pokémon:</strong> {captureCount}
+              </div>
 
-  <div>
-    <strong>Completion:</strong> {completion}%
-  </div>
-</div>
+              <div>
+                <strong>Completion:</strong> {completion}%
+              </div>
+            </div>
 
 
             {/* Capture Section */}
-            
 
-            <div className="
-  bg-[#f5f5dc]
-  border-4 border-black
-  rounded-xl
-  p-6
-  mb-12
-  max-w-2xl
-  mx-auto
-  text-black
-  font-mono
-">
+
+            <div className="bg-[#f5f5dc]border-4 border-black rounded-xl p-6 mb-12
+                            max-w-2xl mx-auto text-black font-mono
+                             ">
 
               <h2 className="text-3xl font-extrabold mb-2">
-   Ready to Catch a Pokémon?
-</h2>
-{encounter && (
-  <div className="border-4 border-black bg-white p-4 mb-6">
+                Ready to Catch a Pokémon?
+              </h2>
+              {encounter && (
+                <div className="border-4 border-black bg-white p-4 mb-6">
 
-    
-    {/* Sprite */}
-    <div className="flex justify-center mb-4">
-  <div className="relative flex justify-center items-end h-40">
-  <img
-    src={encounter.sprite}
-    alt={encounter.name}
-   className={`
+
+                  {/* Sprite */}
+                  <div className="flex justify-center mb-4">
+                    <div className="relative flex justify-center items-end h-40">
+                      <img
+                        src={encounter.sprite}
+                        alt={encounter.name}
+                        className={`
   w-32 h-32
   animate-idle
   animate-spawn
   ${encounter.isLegendary
-    ? "drop-shadow-[0_0_25px_rgba(255,215,0,0.8)]"
-    : ""}
+                            ? "drop-shadow-[0_0_25px_rgba(255,215,0,0.8)]"
+                            : ""}
 `}
 
-  />
-  
+                      />
 
-  <div
-  className={`
+
+                      <div
+                        className={`
     absolute bottom-2
     w-24 h-4
     bg-black/30
@@ -420,67 +421,67 @@ const tx = await contract.capturePokemon(pokemonId, {
     rounded-full
     ${encounter.isLegendary ? "scale-125 bg-yellow-500/40" : ""}
   `}
-></div>
+                      ></div>
 
-</div>
+                    </div>
 
-</div>
+                  </div>
 
-    {/* Text */}
-    <h3 className="text-lg font-bold leading-snug">
-  <TypedText
-    text={`A wild ${encounter.name.toUpperCase()} appeared!`}
-  />
-</h3>
-
-
-    <p className="text-sm mt-1">
-      {encounter.type} • ⭐ {encounter.rarity}
-    </p>
-  </div>
-)}
-
-{encounterResult === "escaped" && encounter && (
-  <div className="mt-3 p-3 rounded-lg bg-red-500/20 border border-red-500/30">
-    <p className="text-sm">
-  💨{" "}
-  <TypedText
-    text={`${encounter.name} ran away!`}
-    speed={35}
-  />
-</p>
-
-    <p className="text-xs text-gray-300 mt-1">
-      You hesitated… better luck next time.
-    </p>
-  </div>
-)}
-
-{encounterResult === "caught" && encounter && (
-  <div className="mt-4 p-4 rounded-xl bg-green-500/20 border border-green-500/30 text-center">
-    <p className="text-lg font-semibold">
-  🎉{" "}
-  <TypedText
-    text={`${encounter.name} was caught!`}
-    speed={35}
-  />
-</p>
-
-    <p className="text-sm text-gray-300 mt-1">
-      Added to your Pokédex.
-    </p>
-  </div>
-)}
+                  {/* Text */}
+                  <h3 className="text-lg font-bold leading-snug">
+                    <TypedText
+                      text={`A wild ${encounter.name.toUpperCase()} appeared!`}
+                    />
+                  </h3>
 
 
-<p className="text-gray-300 mb-8">
-  Choose your Pokémon and throw a Poké Ball on-chain.
-</p>
-           <div className="grid grid-cols-2 gap-4 mt-4">
-                  <button
-  onClick={encounter ? capturePokemon : startEncounter}
-  disabled={loading}
-  className="
+                  <p className="text-sm mt-1">
+                    {encounter.type} • ⭐ {encounter.rarity}
+                  </p>
+                </div>
+              )}
+
+              {encounterResult === "escaped" && encounter && (
+                <div className="mt-3 p-3 rounded-lg bg-red-500/20 border border-red-500/30">
+                  <p className="text-sm">
+                    💨{" "}
+                    <TypedText
+                      text={`${encounter.name} ran away!`}
+                      speed={35}
+                    />
+                  </p>
+
+                  <p className="text-xs text-gray-300 mt-1">
+                    You hesitated… better luck next time.
+                  </p>
+                </div>
+              )}
+
+              {encounterResult === "caught" && encounter && (
+                <div className="mt-4 p-4 rounded-xl bg-green-500/20 border border-green-500/30 text-center">
+                  <p className="text-lg font-semibold">
+                    🎉{" "}
+                    <TypedText
+                      text={`${encounter.name} was caught!`}
+                      speed={35}
+                    />
+                  </p>
+
+                  <p className="text-sm text-gray-300 mt-1">
+                    Added to your Pokédex.
+                  </p>
+                </div>
+              )}
+
+
+              <p className="text-gray-300 mb-8">
+                Choose your Pokémon and throw a Poké Ball on-chain.
+              </p>
+              <div className="grid grid-cols-2 gap-4 mt-4">
+                <button
+                  onClick={encounter ? capturePokemon : startEncounter}
+                  disabled={loading}
+                  className="
     w-full
     bg-red-600
     border-4 border-black
@@ -493,12 +494,12 @@ const tx = await contract.capturePokemon(pokemonId, {
     disabled:opacity-60
     disabled:cursor-not-allowed
   "
->
-  {encounter ? "Capture Pokémon" : "Find Pokémon"}
-</button>
-                   <button
-  onClick={resetEncounterFlow}
-  className="
+                >
+                  {encounter ? "Capture Pokémon" : "Find Pokémon"}
+                </button>
+                <button
+                  onClick={resetEncounterFlow}
+                  className="
     w-full
     bg-gray-300
     border-4 border-black
@@ -509,16 +510,16 @@ const tx = await contract.capturePokemon(pokemonId, {
     tracking-wide
     active:translate-y-1
   "
->
-  Run
-</button>
-</div>
-                  <p className="mt-2 text-xs text-gray-400">
-    Costs 0.001 ETH • Pokémon is permanently yours
-  </p>
-                </div>
-              
-<div>
+                >
+                  Run
+                </button>
+              </div>
+              <p className="mt-2 text-xs text-gray-400">
+                Costs 0.001 ETH • Pokémon is permanently yours
+              </p>
+            </div>
+
+            <div>
               {txHash && (
                 <div className="mt-4 p-4 bg-green-500/20 border border-green-500 rounded-lg">
                   <p className="text-sm flex items-center gap-2">
@@ -551,7 +552,7 @@ const tx = await contract.capturePokemon(pokemonId, {
 ">
 
               <h2 className="text-2xl font-bold mb-6">My Pokédex</h2>
-              
+
               {myPokedex.length === 0 ? (
                 <div className="text-center py-12 text-gray-400">
                   <p className="text-lg">No Pokémon captured yet!</p>
@@ -561,28 +562,28 @@ const tx = await contract.capturePokemon(pokemonId, {
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                   {myPokedex.map((pokemon, index) => {
                     const id = pokemon.pokemonId.toNumber();
-                    const data = POKEMON_DATA[id] || { 
-                      name: `Pokemon #${id}`, 
+                    const data = POKEMON_DATA[id] || {
+                      name: `Pokemon #${id}`,
                       type: "Unknown",
                       color: "#A8A8A8"
                     };
-                    
+
                     return (
-  <div
-    key={index}
-    className="
+                      <div
+                        key={index}
+                        className="
       border-2 border-black
       bg-white
       p-3
       hover:bg-[#e6e6c8]
       transition
     "
-  >
+                      >
 
-                      
+
                         <div className="flex items-center justify-between mb-2">
                           <span className="text-2xl font-bold">#{id}</span>
-                          <span 
+                          <span
                             className="px-3 py-1 rounded-full text-xs font-semibold"
                             style={{ backgroundColor: data.color + "40", color: data.color }}
                           >
@@ -591,22 +592,22 @@ const tx = await contract.capturePokemon(pokemonId, {
                           <span className="text-xs text-gray-500">#{id}</span>
                         </div>
                         <h3
-  className={`
+                          className={`
   border-2 border-black
   bg-white
   p-3
   transition
   ${LEGENDARY_IDS.includes(id)
- ? "bg-[#fff8dc]" : ""}
+                              ? "bg-[#fff8dc]" : ""}
 `}
-  style={{ color: data.color }}
->
-  {data.name}
-  {LEGENDARY_IDS.includes(id)
-&& (
-    <span className="text-yellow-600 text-sm">★</span>
-  )}
-</h3>
+                          style={{ color: data.color }}
+                        >
+                          {data.name}
+                          {LEGENDARY_IDS.includes(id)
+                            && (
+                              <span className="text-yellow-600 text-sm">★</span>
+                            )}
+                        </h3>
 
 
                         <p className="text-xs text-gray-300">
@@ -625,7 +626,7 @@ const tx = await contract.capturePokemon(pokemonId, {
         {!account && (
           <div className="mt-8 bg-yellow-500/10 border border-yellow-500 rounded-xl p-6 max-w-2xl mx-auto">
             <h3 className="text-xl font-bold mb-3">⚙️ Setup Checklist</h3>
-            <ol className="space-y-2 text-sm text-gray-300">
+            <ol className="space-y-2 text-sm text-gray-500">
               <li className="flex items-start gap-2">
                 <span className="font-bold">1.</span>
                 <span>Install MetaMask extension from <a href="https://metamask.io" target="_blank" className="text-yellow-400 hover:underline">metamask.io</a></span>
